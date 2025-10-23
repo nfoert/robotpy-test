@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Deploy robot code using RobotPy",
+      "type": "shell",
+      "command": "source ./.venv/bin/activate && robotpy deploy",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always"
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    },
+    {
+      "label": "Update robotpy and sync dependencies",
+      "type": "shell",
+      "command": "source ./.venv/bin/activate && robotpy project update-robotpy && robotpy sync",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always"
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    },
+}
