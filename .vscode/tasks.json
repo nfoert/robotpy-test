@@ -10,9 +10,6 @@
       "presentation": {
         "reveal": "always"
       },
-      "runOptions": {
-        "runOn": "folderOpen"
-      }
     },
     {
       "label": "Update robotpy and sync dependencies",
@@ -23,8 +20,5 @@
       "presentation": {
         "reveal": "always"
       },
-      "runOptions": {
-        "runOn": "folderOpen"
-      }
     },
 }
