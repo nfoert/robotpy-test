@@ -12,9 +12,9 @@ from FRC3484_Lib import SC_Datatypes
 class SwerveModule:
     def __init__(self, corner: SC_Datatypes.SC_SwerveConfigs, pid_struct: SC_Datatypes.SC_SwervePID, drivetrain_canbus_name: str = "rio") -> None:
         # Create objects
-        self.drive_motor: phoenix6.hardware.talon_fx = phoenix6.hardware.talon_fx(corner.CAN_ID, drivetrain_canbus_name)
-        self.steer_motor: phoenix6.hardware.talon_fx = phoenix6.hardware.talon_fx(corner.SteerMotorPort, drivetrain_canbus_name)
-        self.steer_encoder: phoenix6.hardware.cancoder = phoenix6.hardware.cancoder(corner.EncoderPort, drivetrain_canbus_name)
+        self.drive_motor: phoenix6.hardware.TalonFX = phoenix6.hardware.TalonFX(corner.CAN_ID, drivetrain_canbus_name)
+        self.steer_motor: phoenix6.hardware.TalonFX = phoenix6.hardware.TalonFX(corner.SteerMotorPort, drivetrain_canbus_name)
+        self.steer_encoder: phoenix6.hardware.CANcoder = phoenix6.hardware.CANcoder(corner.EncoderPort, drivetrain_canbus_name)
 
         self.drive_motor_config: phoenix6.configs.TalonFXConfiguration = phoenix6.configs.TalonFXConfiguration()
         self.steer_motor_config: phoenix6.configs.TalonFXConfiguration = phoenix6.configs.TalonFXConfiguration()
@@ -46,9 +46,7 @@ class SwerveModule:
 
         self.drive_motor_config.current_limits = self.drive_current_limit
         self.drive_motor_config.open_loop_ramps.duty_cycle_open_loop_ramp_period: seconds = 0.25
-        # TODO: getConfigurator doesn't seem to be a real function, does this work differently in Python?
-        self.drive_motor.getConfigurator().apply(self.drive_motor_config)
-        # TODO: Implement these actual functions
+        self.drive_motor.configurator.apply(self.drive_motor_config)
         self.setBrakeMode()
         self.resetEncoder()
 
@@ -63,8 +61,7 @@ class SwerveModule:
         self.steer_motor_config.motor_output.inverted = self.swerve_current_constants.SteerMotorReversed
         self.steer_motor_config.motor_output.neutral_mode = phoenix6.signals.NeutralModeValue.BRAKE
 
-        # TODO: getConfigurator doesn't seem to be a real function, does this work differently in Python?
-        self.steer_motor.getConfigurator().apply(self.steer_motor_config)
+        self.steer_motor.configurator.apply(self.steer_motor_config)
 
         # Set up encoder configs
         self.encoder_magnet_config: phoenix6.configs.MagnetSensorConfigs = phoenix6.configs.MagnetSensorConfigs()
@@ -74,8 +71,7 @@ class SwerveModule:
             .with_absolute_sensor_discontinuity_point(180.0)
 
         self.encoder_config.magnet_sensor = self.encoder_magnet_config
-        # TODO: getConfigurator doesn't seem to be a real function, does this work differently in Python?
-        self.steer_encoder.getConfigurator().apply(self.encoder_config)
+        self.steer_encoder.configurator.apply(self.encoder_config)
 
         self.steer_pid_controller.enableContinuousInput(-180.0, 180.0)
 
@@ -135,10 +131,8 @@ class SwerveModule:
 
     def setCoastMode(self) -> None:
         self.drive_motor_config.motor_output.neutral_mode = phoenix6.signals.NeutralModeValue.COAST
-        # TODO: getConfigurator doesn't seem to be a real function, does this work differently in Python?
-        self.drive_motor.getConfigurator().apply(self.drive_motor_config)
+        self.drive_motor.configurator.apply(self.drive_motor_config)
 
     def setBrakeMode(self) -> None:
         self.drive_motor_config.motor_output.neutral_mode = phoenix6.signals.NeutralModeValue.BRAKE
-        # TODO: getConfigurator doesn't seem to be a real function, does this work differently in Python?
-        self.drive_motor.getConfigurator().apply(self.drive_motor_config)
+        self.drive_motor.configurator.apply(self.drive_motor_config)
